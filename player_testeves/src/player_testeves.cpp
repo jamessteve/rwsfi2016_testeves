@@ -107,6 +107,7 @@ public:
                 ROS_INFO_STREAM("Preyer mais proximo: " << preys_team->players[angleMin] << " angle: " << getAngleToPLayer(preys_team->players[angleMin]));
                 //MOVE//
                 move(msg.max_displacement, getAngleToPLayer(preys_team->players[angleMin]));
+                move(msg.max_displacement, getAngleToPLayer(preys_team->players[angleMin]));
                 bocas_msg.text = preys_team->players[angleMin] + ", toma toma toma foguetinhos!!!";
             }
         }
