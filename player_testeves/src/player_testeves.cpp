@@ -32,8 +32,31 @@ class MyPlayer: public rwsfi2016_libs::Player
       //Custom play behaviour. Now I will win the game
 
       //Behaviour follow the closest prey
-// getAngleToPLayer(preys_team->players[0])
-      move(msg.max_displacement, M_PI);
+	double dist_min = 1000;
+	int angleMin = 0;
+	double dist = 0;
+	for (int pl=0; pl<preys_team->players.size(); pl++) {
+		dist = getDistanceToPlayer(preys_team->players[pl]);
+	if (dist_min < dist) {
+		angleMin = pl;
+		dist_min = dist;
+	}
+	}
+double dist_min_hunter = 1000;
+double dist_hunter = 0;
+int angleMinHunter = 0;
+	for (int pl=0; pl<hunters_team->players.size(); pl++) {
+		dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
+	if (dist_min_hunter < dist_hunter) {
+		angleMinHunter = pl;
+		dist_min_hunter = dist_min;
+	}
+	}
+if (dist_min_hunter < dist_min) {
+move(msg.max_displacement, getAngleToPLayer(hunters_team->players[angleMinHunter])-M_PI);
+} else {
+      move(msg.max_displacement, getAngleToPLayer(preys_team->players[angleMin]));
+}
     }
 };
 
