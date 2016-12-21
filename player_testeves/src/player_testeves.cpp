@@ -37,7 +37,7 @@ public:
         bocas_msg.id = 0;
         bocas_msg.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
         bocas_msg.action = visualization_msgs::Marker::ADD;
-        bocas_msg.scale.z = 0.4;
+        bocas_msg.scale.z = 1.2;
         bocas_msg.pose.position.y = 0.3;
         bocas_msg.color.a = 1.0; // Don't forget to set the alpha!
         bocas_msg.color.r = 0.0;
