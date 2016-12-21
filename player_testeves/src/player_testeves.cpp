@@ -54,13 +54,13 @@ public:
         double dist_min_team = 100000;
         double dist_team = 0;
         int angleMinteam = 0;
-        for (int pl=0; pl < my_team->players.size(); pl++) {
-            dist_team = getDistanceToPlayer(my_team->players[pl]);
-            if ((dist_team < dist_min_team) && (!isnan(dist_team))) {
-                angleMinteam = pl;
-                dist_min_team = dist_team;
-            }
-        }
+//        for (int pl=0; pl < my_team->players.size(); pl++) {
+//            dist_team = getDistanceToPlayer(my_team->players[pl]);
+//            if ((dist_team < dist_min_team) && (!isnan(dist_team))) {
+//                angleMinteam = pl;
+//                dist_min_team = dist_team;
+//            }
+//        }
 
         double finalAngle = 0.0;
         if (dist_min_hunter < dist_min) {
