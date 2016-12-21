@@ -63,7 +63,7 @@ public:
         double distance_to_arena = getDistanceToArena();
         ROS_INFO("distance_to_arena = %f", distance_to_arena);
 
-        if (distance_to_arena > 6) { //behaviour move to the center of arena
+        if (distance_to_arena > 7.3) { //behaviour move to the center of arena
             string arena = "/map";
             move(msg.max_displacement, getAngleToPLayer(arena));
             bocas_msg.text = "Nao vas para ai pah!!!";
@@ -83,13 +83,13 @@ public:
             double dist_min_hunter = 100000;
             double dist_hunter = 0;
             int angleMinHunter = 0;
-            //            for (int pl=0; pl < hunters_team->players.size(); pl++) {
-            //                dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
-            //                if ((dist_hunter < dist_min_hunter) && (!isnan(dist_hunter))) {
-            //                    angleMinHunter = pl;
-            //                    dist_min_hunter = dist_hunter;
-            //                }
-            //            }
+//            for (int pl=0; pl < hunters_team->players.size(); pl++) {
+//                dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
+//                if ((dist_hunter < dist_min_hunter) && (!isnan(dist_hunter))) {
+//                    angleMinHunter = pl;
+//                    dist_min_hunter = dist_hunter;
+//                }
+//            }
             double dist_min_team = 100000;
             double dist_team = 0;
             int angleMinteam = 0;
