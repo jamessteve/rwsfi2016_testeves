@@ -50,19 +50,57 @@ public:
                 dist_min_hunter = dist_hunter;
             }
         }
+        // Find team mates
+        double dist_min_team = 100000;
+        double dist_team = 0;
+        int angleMinteam = 0;
+        for (int pl=0; pl < my_team->players.size(); pl++) {
+            dist_team = getDistanceToPlayer(my_team->players[pl]);
+            if ((dist_team < dist_min_team) && (!isnan(dist_team))) {
+                angleMinteam = pl;
+                dist_min_team = dist_team;
+            }
+        }
 
         double finalAngle = 0.0;
         if (dist_min_hunter < dist_min) {
-            ROS_INFO_STREAM("Hunter mais proximo: " << hunters_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(preys_team->players[angleMin]));
-            double angle_temp = getAngleToPLayer(hunters_team->players[angleMinHunter]);
-            finalAngle = angle_temp+M_PI;
-            if (angle_temp > 0)
-                finalAngle = angle_temp-M_PI;
-            move(msg.max_displacement, finalAngle);
+            if (dist_min_hunter < dist_min_team) {
+                ROS_INFO_STREAM("Hunter mais proximo: " << hunters_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(hunters_team->players[angleMin]));
+                double angle_temp = getAngleToPLayer(hunters_team->players[angleMinHunter]);
+                finalAngle = angle_temp+M_PI;
+                if (angle_temp > 0)
+                    finalAngle = angle_temp-M_PI;
+                //MOVE//
+                if (getDistanceToArena() < 4) { // Evaluate if we are moving outside map
+                    move(msg.max_displacement, finalAngle);
+                } else {
+                    move(msg.max_displacement, angle_temp+(M_PI/2));
+                }
+            } else {
+                ROS_INFO_STREAM("Team mais proximo: " << my_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(my_team->players[angleMin]));
+                double angle_temp = getAngleToPLayer(my_team->players[angleMinteam]);
+                finalAngle = angle_temp+M_PI;
+                if (angle_temp > 0)
+                    finalAngle = angle_temp-M_PI;
+                //MOVE//
+                if (getDistanceToArena() < 4) { // Evaluate if we are moving outside map
+                    move(msg.max_displacement, finalAngle);
+                } else {
+                    move(msg.max_displacement, angle_temp+(M_PI/2));
+                }
+            }
         } else {
             ROS_INFO_STREAM("Preyer mais proximo: " << preys_team->players[angleMin] << " angle: " << getAngleToPLayer(preys_team->players[angleMin]));
-            move(msg.max_displacement, getAngleToPLayer(preys_team->players[angleMin]));
+            //MOVE
+            //MOVE//
+            if (getDistanceToArena() < 4) { // Evaluate if we are moving outside map
+                move(msg.max_displacement, getAngleToPLayer(preys_team->players[angleMin]));
+            } else {
+                move(msg.max_displacement, getAngleToPLayer(preys_team->players[angleMin])+(M_PI/2));
+            }
         }
+
+
     }
 };
 
