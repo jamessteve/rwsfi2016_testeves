@@ -83,13 +83,13 @@ public:
             double dist_min_hunter = 100000;
             double dist_hunter = 0;
             int angleMinHunter = 0;
-            for (int pl=0; pl < hunters_team->players.size(); pl++) {
-                dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
-                if ((dist_hunter < dist_min_hunter) && (!isnan(dist_hunter))) {
-                    angleMinHunter = pl;
-                    dist_min_hunter = dist_hunter;
-                }
-            }
+//            for (int pl=0; pl < hunters_team->players.size(); pl++) {
+//                dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
+//                if ((dist_hunter < dist_min_hunter) && (!isnan(dist_hunter))) {
+//                    angleMinHunter = pl;
+//                    dist_min_hunter = dist_hunter;
+//                }
+//            }
 //            double dist_min_my = 100000;
 //            double dist_my = 0;
 //            int angleMinMy = 0;
@@ -105,9 +105,9 @@ public:
 //                if (dist_min_hunter < dist_min_my) {
                     ROS_INFO_STREAM("Hunter mais proximo: " << hunters_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(hunters_team->players[angleMin]));
                     double angle_temp = getAngleToPLayer(hunters_team->players[angleMinHunter]);
-                    finalAngle = angle_temp+M_PI;
+                    finalAngle = angle_temp+M_PI/2;
                     if (angle_temp > 0)
-                        finalAngle = angle_temp-M_PI;
+                        finalAngle = angle_temp-M_PI/2;
                     //MOVE//
                     move(msg.max_displacement, finalAngle);
                     bocas_msg.text = "Foge que vem ai o predador " + hunters_team->players[angleMinHunter];
