@@ -29,15 +29,13 @@ public:
 
     void play(const rwsfi2016_msgs::MakeAPlay& msg)
     {
-        //Custom play behaviour. Now I will win the game
-
         //Behaviour follow the closest prey
         double dist_min = 100000;
         int angleMin = 0;
         double dist = 0;
         for (int pl=0; pl < preys_team->players.size(); pl++) {
             dist = getDistanceToPlayer(preys_team->players[pl]);
-            if (dist < dist_min) {
+            if ((dist < dist_min) && (!isnan(dist) ) ) {
                 angleMin = pl;
                 dist_min = dist;
             }
@@ -47,14 +45,22 @@ public:
         int angleMinHunter = 0;
         for (int pl=0; pl < hunters_team->players.size(); pl++) {
             dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
-            if (dist_hunter < dist_min_hunter) {
+            if ((dist_hunter < dist_min_hunter) && (!isnan(dist_hunter))) {
                 angleMinHunter = pl;
                 dist_min_hunter = dist_hunter;
             }
         }
+
+        double finalAngle = 0.0;
         if (dist_min_hunter < dist_min) {
-            move(msg.max_displacement, getAngleToPLayer(hunters_team->players[angleMinHunter])+M_PI/3);
+            ROS_INFO_STREAM("Hunter mais proximo: " << hunters_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(preys_team->players[angleMin]));
+            double angle_temp = getAngleToPLayer(hunters_team->players[angleMinHunter]);
+            finalAngle = angle_temp+M_PI;
+            if (angle_temp > 0)
+                finalAngle = angle_temp-M_PI;
+            move(msg.max_displacement, finalAngle);
         } else {
+            ROS_INFO_STREAM("Preyer mais proximo: " << preys_team->players[angleMin] << " angle: " << getAngleToPLayer(preys_team->players[angleMin]));
             move(msg.max_displacement, getAngleToPLayer(preys_team->players[angleMin]));
         }
     }
