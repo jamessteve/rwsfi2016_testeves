@@ -94,7 +94,7 @@ public:
             double dist_team = 0;
             int angleMinteam = 0;
             double finalAngle = 0.0;
-            if (dist_min_hunter < dist_min) {
+            if (dist_min_hunter < dist_min/2) {
                 ROS_INFO_STREAM("Hunter mais proximo: " << hunters_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(hunters_team->players[angleMin]));
                 double angle_temp = getAngleToPLayer(hunters_team->players[angleMinHunter]);
                 finalAngle = angle_temp+M_PI;
