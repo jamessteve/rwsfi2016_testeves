@@ -6,7 +6,7 @@
 #include <std_msgs/String.h>
 #include <visualization_msgs/Marker.h>
 #include <rwsfi2016_libs/player.h>
-
+#include <rwsfi2016_msgs/GameQuery.h>
 /* _________________________________
    |                                 |
    |              CODE               |
@@ -24,6 +24,8 @@ public:
 
     ros::Publisher publisher;
     visualization_msgs::Marker bocas_msg;
+    // ROSSERVICE
+    ros::ServiceServer service;
 
     /**
      * @brief Constructor, nothing to be done here
@@ -37,15 +39,21 @@ public:
         bocas_msg.id = 0;
         bocas_msg.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
         bocas_msg.action = visualization_msgs::Marker::ADD;
-        bocas_msg.scale.z = 1.2;
+        bocas_msg.scale.z = 0.4;
         bocas_msg.pose.position.y = 0.3;
         bocas_msg.color.a = 1.0; // Don't forget to set the alpha!
         bocas_msg.color.r = 0.0;
         bocas_msg.color.g = 0.0;
         bocas_msg.color.b = 0.0;
+
+        service = node.advertiseService("/testeves/game_query", &MyPlayer::queryCallback, this);
     };
 
-
+    bool queryCallback(rwsfi2016_msgs::GameQuery::Request &req, rwsfi2016_msgs::GameQuery::Response &res)
+    {
+        res.resposta = "Hello, it is a banana!";
+        return true;
+    }
 
 
     void play(const rwsfi2016_msgs::MakeAPlay& msg)
@@ -75,14 +83,13 @@ public:
             double dist_min_hunter = 100000;
             double dist_hunter = 0;
             int angleMinHunter = 0;
-            for (int pl=0; pl < hunters_team->players.size(); pl++) {
-                dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
-                if ((dist_hunter < dist_min_hunter) && (!isnan(dist_hunter))) {
-                    angleMinHunter = pl;
-                    dist_min_hunter = dist_hunter;
-                }
-            }
-            // Find team mates
+            //            for (int pl=0; pl < hunters_team->players.size(); pl++) {
+            //                dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
+            //                if ((dist_hunter < dist_min_hunter) && (!isnan(dist_hunter))) {
+            //                    angleMinHunter = pl;
+            //                    dist_min_hunter = dist_hunter;
+            //                }
+            //            }
             double dist_min_team = 100000;
             double dist_team = 0;
             int angleMinteam = 0;
@@ -107,6 +114,7 @@ public:
         publisher.publish(bocas_msg);
 
     }
+
 };
 
 
@@ -122,7 +130,7 @@ int main(int argc, char** argv)
     //Replace this with your name
     // ------------------------
     string my_name = "testeves";
-    string my_pet = "/cheetah";
+    string my_pet = "/cat";
 
     //initialize ROS stuff
     ros::init(argc, argv, my_name);
