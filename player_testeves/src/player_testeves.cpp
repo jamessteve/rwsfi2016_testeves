@@ -125,137 +125,137 @@ public:
     void play(const rwsfi2016_msgs::MakeAPlay& msg)
     {
 
-//        bocas_msg.header.stamp = ros::Time();
-
-//        // Player to kill
-//        int killkill = 0;
-
-//        // Distance to arena
-//        double distance_to_arena = getDistanceToArena();
-//        if (distance_to_arena > 7) { //behaviour move to the center of arena
-//            string arena = "/map";
-//            move(msg.max_displacement, getAngleToPLayer(arena));
-//            bocas_msg.text = "Nao vas para ai pah!!!";
-//        } else {
-//            if (msg.blue_alive.size() > 0) { // Se existir algum vivo
-//                // Kill player id "killkill"
-//                string kill_player_name = msg.blue_alive.at(killkill);
-//                for (int pl=0; pl<msg.blue_alive.size(); pl++) {
-//                    if (kill_player_name.compare(msg.blue_alive.at(pl)) != 0) {
-//                        // Procura o alive mais perto
-//                        double dist_min = 100000;
-//                        int angleMin = 0;
-//                        double dist = 0;
-//                        for (int pl=0; pl < msg.blue_alive.size(); pl++) {
-//                            dist = getDistanceToPlayer(msg.blue_alive.at(pl));
-//                            if ((dist < dist_min) && (!isnan(dist) ) ) {
-//                                killkill = pl;
-//                                dist_min = dist;
-//                            }
-//                        }
-//                    }
-//                    break;
-//                }
-//                move(msg.max_displacement, getAngleToPLayer(msg.blue_alive.at(killkill)));
-//                bocas_msg.text = msg.blue_alive.at(killkill) + ", toma toma toma foguetinhos!!!";
-//            } else { // Se estiverem todos mortos
-//                double dist_min_hunter = 100000;
-//                double dist_hunter = 0;
-//                int angleMinHunter = 0;
-//                for (int pl=0; pl < hunters_team->players.size(); pl++) {
-//                    dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
-//                    if ((dist_hunter < dist_min_hunter) && (!isnan(dist_hunter))) {
-//                        angleMinHunter = pl;
-//                        dist_min_hunter = dist_hunter;
-//                    }
-//                }
-//                // Foge do que estiver mais perto
-//                ROS_INFO_STREAM("Hunter mais proximo: " << hunters_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(hunters_team->players[angleMinHunter]));
-//                double angle_temp = getAngleToPLayer(hunters_team->players[angleMinHunter]);
-//                double finalAngle = angle_temp+M_PI;
-//                if (angle_temp > 0)
-//                    finalAngle = angle_temp-M_PI;
-//                //MOVE//
-//                move(msg.max_displacement, finalAngle);
-//                bocas_msg.text = "Foge que vem ai o predador " + hunters_team->players[angleMinHunter];
-//            }
-//        }
-
-//        publisher.publish(bocas_msg);
-
-
         bocas_msg.header.stamp = ros::Time();
 
-        double distance_to_arena = getDistanceToArena();
-        ROS_INFO("distance_to_arena = %f", distance_to_arena);
+        // Player to kill
+        int killkill = 0;
 
+        // Distance to arena
+        double distance_to_arena = getDistanceToArena();
         if (distance_to_arena > 7.5) { //behaviour move to the center of arena
             string arena = "/map";
             move(msg.max_displacement, getAngleToPLayer(arena));
             bocas_msg.text = "Nao vas para ai pah!!!";
-        } else
-        {
-            //Behaviour follow the closest prey
-            double dist_min = 100000;
-            int angleMin = 0;
-            double dist = 0;
-            for (int pl=0; pl < preys_team->players.size(); pl++) {
-                dist = getDistanceToPlayer(preys_team->players[pl]);
-                if ((dist < dist_min) && (!isnan(dist) ) ) {
-                    angleMin = pl;
-                    dist_min = dist;
+        } else {
+            if (msg.blue_alive.size() > 0) { // Se existir algum vivo
+                // Kill player id "killkill"
+                string kill_player_name = msg.blue_alive.at(killkill);
+                for (int pl=0; pl<msg.blue_alive.size(); pl++) {
+                    if (kill_player_name.compare(msg.blue_alive.at(pl)) != 0) {
+                        // Procura o alive mais perto
+                        double dist_min = 100000;
+                        int angleMin = 0;
+                        double dist = 0;
+                        for (int pl=0; pl < msg.blue_alive.size(); pl++) {
+                            dist = getDistanceToPlayer(msg.blue_alive.at(pl));
+                            if ((dist < dist_min) && (!isnan(dist) ) ) {
+                                killkill = pl;
+                                dist_min = dist;
+                            }
+                        }
+                    }
+                    break;
                 }
-            }
-            double dist_min_hunter = 100000;
-            double dist_hunter = 0;
-            int angleMinHunter = 0;
-            for (int pl=0; pl < hunters_team->players.size(); pl++) {
-                dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
-                if ((dist_hunter < dist_min_hunter) && (!isnan(dist_hunter))) {
-                    angleMinHunter = pl;
-                    dist_min_hunter = dist_hunter;
+                move(msg.max_displacement, getAngleToPLayer(msg.blue_alive.at(killkill)));
+                bocas_msg.text = msg.blue_alive.at(killkill) + ", toma toma toma foguetinhos!!!";
+            } else { // Se estiverem todos mortos
+                double dist_min_hunter = 100000;
+                double dist_hunter = 0;
+                int angleMinHunter = 0;
+                for (int pl=0; pl < hunters_team->players.size(); pl++) {
+                    dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
+                    if ((dist_hunter < dist_min_hunter) && (!isnan(dist_hunter))) {
+                        angleMinHunter = pl;
+                        dist_min_hunter = dist_hunter;
+                    }
                 }
-            }
-            //            double dist_min_my = 100000;
-            //            double dist_my = 0;
-            //            int angleMinMy = 0;
-            //            for (int pl=0; pl < my_team->players.size(); pl++) {
-            //                dist_my = getDistanceToPlayer(my_team->players[pl]);
-            //                if ((dist_my < dist_min_my) && (!isnan(dist_my))) {
-            //                    angleMinMy = pl;
-            //                    dist_min_my = dist_my;
-            //                }
-            //            }
-            double finalAngle = 0.0;
-            if (dist_min_hunter < dist_min/2) {
-                //                if (dist_min_hunter < dist_min_my) {
-                ROS_INFO_STREAM("Hunter mais proximo: " << hunters_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(hunters_team->players[angleMin]));
+                // Foge do que estiver mais perto
+                ROS_INFO_STREAM("Hunter mais proximo: " << hunters_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(hunters_team->players[angleMinHunter]));
                 double angle_temp = getAngleToPLayer(hunters_team->players[angleMinHunter]);
-                finalAngle = angle_temp+M_PI;
+                double finalAngle = angle_temp+M_PI;
                 if (angle_temp > 0)
                     finalAngle = angle_temp-M_PI;
                 //MOVE//
                 move(msg.max_displacement, finalAngle);
                 bocas_msg.text = "Foge que vem ai o predador " + hunters_team->players[angleMinHunter];
-                //                } else {
-                //                    ROS_INFO_STREAM("My team proximo: " << hunters_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(hunters_team->players[angleMin]));
-                //                    double angle_temp = getAngleToPLayer(my_team->players[angleMinMy]);
-                //                    finalAngle = angle_temp+M_PI;
-                //                    if (angle_temp > 0)
-                //                        finalAngle = angle_temp-M_PI;
-                //                    //MOVE//
-                //                    move(msg.max_displacement, finalAngle);
-                //                    bocas_msg.text = "Foge que vem ai o predador " + my_team->players[angleMinMy];
-                //                }
-            } else {
-                ROS_INFO_STREAM("Preyer mais proximo: " << preys_team->players[angleMin] << " angle: " << getAngleToPLayer(preys_team->players[angleMin]));
-                //MOVE//
-                move(msg.max_displacement, getAngleToPLayer(preys_team->players[angleMin]));
-                bocas_msg.text = preys_team->players[angleMin] + ", toma toma toma foguetinhos!!!";
             }
         }
 
         publisher.publish(bocas_msg);
+
+
+//        bocas_msg.header.stamp = ros::Time();
+
+//        double distance_to_arena = getDistanceToArena();
+//        ROS_INFO("distance_to_arena = %f", distance_to_arena);
+
+//        if (distance_to_arena > 7.5) { //behaviour move to the center of arena
+//            string arena = "/map";
+//            move(msg.max_displacement, getAngleToPLayer(arena));
+//            bocas_msg.text = "Nao vas para ai pah!!!";
+//        } else
+//        {
+//            //Behaviour follow the closest prey
+//            double dist_min = 100000;
+//            int angleMin = 0;
+//            double dist = 0;
+//            for (int pl=0; pl < preys_team->players.size(); pl++) {
+//                dist = getDistanceToPlayer(preys_team->players[pl]);
+//                if ((dist < dist_min) && (!isnan(dist) ) ) {
+//                    angleMin = pl;
+//                    dist_min = dist;
+//                }
+//            }
+//            double dist_min_hunter = 100000;
+//            double dist_hunter = 0;
+//            int angleMinHunter = 0;
+//            for (int pl=0; pl < hunters_team->players.size(); pl++) {
+//                dist_hunter = getDistanceToPlayer(hunters_team->players[pl]);
+//                if ((dist_hunter < dist_min_hunter) && (!isnan(dist_hunter))) {
+//                    angleMinHunter = pl;
+//                    dist_min_hunter = dist_hunter;
+//                }
+//            }
+//            //            double dist_min_my = 100000;
+//            //            double dist_my = 0;
+//            //            int angleMinMy = 0;
+//            //            for (int pl=0; pl < my_team->players.size(); pl++) {
+//            //                dist_my = getDistanceToPlayer(my_team->players[pl]);
+//            //                if ((dist_my < dist_min_my) && (!isnan(dist_my))) {
+//            //                    angleMinMy = pl;
+//            //                    dist_min_my = dist_my;
+//            //                }
+//            //            }
+//            double finalAngle = 0.0;
+//            if (dist_min_hunter < dist_min/2) {
+//                //                if (dist_min_hunter < dist_min_my) {
+//                ROS_INFO_STREAM("Hunter mais proximo: " << hunters_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(hunters_team->players[angleMin]));
+//                double angle_temp = getAngleToPLayer(hunters_team->players[angleMinHunter]);
+//                finalAngle = angle_temp+M_PI;
+//                if (angle_temp > 0)
+//                    finalAngle = angle_temp-M_PI;
+//                //MOVE//
+//                move(msg.max_displacement, finalAngle);
+//                bocas_msg.text = "Foge que vem ai o predador " + hunters_team->players[angleMinHunter];
+//                //                } else {
+//                //                    ROS_INFO_STREAM("My team proximo: " << hunters_team->players[angleMinHunter] << " angle: " << getAngleToPLayer(hunters_team->players[angleMin]));
+//                //                    double angle_temp = getAngleToPLayer(my_team->players[angleMinMy]);
+//                //                    finalAngle = angle_temp+M_PI;
+//                //                    if (angle_temp > 0)
+//                //                        finalAngle = angle_temp-M_PI;
+//                //                    //MOVE//
+//                //                    move(msg.max_displacement, finalAngle);
+//                //                    bocas_msg.text = "Foge que vem ai o predador " + my_team->players[angleMinMy];
+//                //                }
+//            } else {
+//                ROS_INFO_STREAM("Preyer mais proximo: " << preys_team->players[angleMin] << " angle: " << getAngleToPLayer(preys_team->players[angleMin]));
+//                //MOVE//
+//                move(msg.max_displacement, getAngleToPLayer(preys_team->players[angleMin]));
+//                bocas_msg.text = preys_team->players[angleMin] + ", toma toma toma foguetinhos!!!";
+//            }
+//        }
+
+//        publisher.publish(bocas_msg);
 
     }
 
