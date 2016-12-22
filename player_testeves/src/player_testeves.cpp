@@ -66,7 +66,7 @@ public:
 
         // Distance to arena
         double distance_to_arena = getDistanceToArena();
-        if (distance_to_arena > 7.5) { //behaviour move to the center of arena
+        if (distance_to_arena > 7) { //behaviour move to the center of arena
             string arena = "/map";
             move(msg.max_displacement, getAngleToPLayer(arena));
             bocas_msg.text = "Nao vas para ai pah!!!";
