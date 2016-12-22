@@ -65,7 +65,6 @@ public:
         pcl::fromROSMsg(*msg, objectReceived);
         std::cout << "Object received and converted" << std::endl;
         std::cout << "Tamanho da point cloud: " << objectReceived.points.size() << std::endl;
-        std::cout << "r: " << objectReceived.points[1000].r << std::endl;
     }
 
     bool queryCallback(rwsfi2016_msgs::GameQuery::Request &req, rwsfi2016_msgs::GameQuery::Response &res)
@@ -79,7 +78,6 @@ public:
         std::cout << "################################# " << std::endl;
         std::cout << "################################# " << std::endl;
         std::cout << "Tamanho da point cloud: " << objectReceived.points.size() << std::endl;
-        std::cout << "r: " << objectReceived.points[2000].r << std::endl;
         std::cout << "################################# " << std::endl;
         std::cout << "################################# " << std::endl;
         std::cout << "################################# " << std::endl;
