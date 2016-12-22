@@ -58,6 +58,9 @@ public:
 
     void play(const rwsfi2016_msgs::MakeAPlay& msg)
     {
+
+        bocas_msg.header.stamp = ros::Time();
+
         // Player to kill
         int killkill = 0;
 
@@ -77,6 +80,7 @@ public:
                         killkill = 1;
                 }
                 move(msg.max_displacement, getAngleToPLayer(msg.blue_alive.at(killkill)));
+                bocas_msg.text = msg.blue_alive.at(killkill) + ", toma toma toma foguetinhos!!!";
             } else { // Se estiverem todos mortos
                 double dist_min_hunter = 100000;
                 double dist_hunter = 0;
@@ -96,8 +100,11 @@ public:
                     finalAngle = angle_temp-M_PI;
                 //MOVE//
                 move(msg.max_displacement, finalAngle);
+                bocas_msg.text = "Foge que vem ai o predador " + hunters_team->players[angleMinHunter];
             }
         }
+
+        publisher.publish(bocas_msg);
 
 
 //        bocas_msg.header.stamp = ros::Time();
