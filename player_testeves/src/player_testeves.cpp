@@ -64,36 +64,66 @@ public:
         // Convert to point cloud
         pcl::fromROSMsg(*msg, objectReceived);
         std::cout << "Object received and converted" << std::endl;
-        std::cout << "Tamanho da point cloud: " << objectReceived.points.size() << std::endl;
+//        std::cout << "Tamanho da point cloud: " << objectReceived.points.size() << std::endl;
     }
 
     bool queryCallback(rwsfi2016_msgs::GameQuery::Request &req, rwsfi2016_msgs::GameQuery::Response &res)
     {
         // Object to analyze
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "Tamanho da point cloud: " << objectReceived.points.size() << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-        std::cout << "################################# " << std::endl;
-
-        if (objectReceived.points.size() == 3805)
-            res.resposta = "soda_can";
-        if (objectReceived.points.size() == 3979)
+        double meanValR = 0.0;
+        double meanValG = 0.0;
+        double meanValB = 0.0;
+        int objectSize = 0;
+        for (int pt = 0; pt < objectReceived.points.size(); pt++) {
+            if (!isnan(objectReceived.points[pt].r)) {
+                meanValR += objectReceived.points[pt].r;
+                meanValG += objectReceived.points[pt].g;
+                meanValB += objectReceived.points[pt].b;
+                objectSize++;
+            }
+        }
+        // Compute mean
+        meanValR = meanValR/objectSize;
+        meanValG = meanValG/objectSize;
+        meanValB = meanValB/objectSize;
+//        std::cout << "R: " << meanValR << std::endl;
+//        std::cout << "G: " << meanValG << std::endl;
+//        std::cout << "B: " << meanValB << std::endl;
+        if (meanValR > 130) {
             res.resposta = "banana";
-        if (objectReceived.points.size() == 3468)
-            res.resposta = "onion";
-        if (objectReceived.points.size() == 1570)
-            res.resposta = "tomato";
+        } else {
+            if (meanValR > 90) {
+                res.resposta = "tomato";
+            } else {
+                if (meanValB > 70) {
+                    res.resposta = "soda_can";
+                } else {
+                    res.resposta = "onion";
+                }
+            }
+        }
+//        if (meanValB > 70)
+//            res.resposta = "banana";
+//        if (meanValB < 70 && meanValR > 110)
+//            res.resposta = "banana";
+//        if (meanValR > 130 && meanValG > 110)
+//            res.resposta = "banana";
+
+
+//        if (objectReceived.points.size() == 3805)
+//            res.resposta = "soda_can";
+//        if (objectReceived.points.size() == 3979)
+//            res.resposta = "banana";
+//        if (objectReceived.points.size() == 3468)
+//            res.resposta = "onion";
+//        if (objectReceived.points.size() == 1570)
+//            res.resposta = "tomato";
+
+        std::cout << "###############" << std::endl;
+        std::cout << "###############" << std::endl;
+        std::cout << "Resposta final: " << res.resposta << std::endl;
+        std::cout << "###############" << std::endl;
+        std::cout << "###############" << std::endl;
 
         return true;
     }
