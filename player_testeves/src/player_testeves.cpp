@@ -76,8 +76,20 @@ public:
                 // Kill player id "killkill"
                 string kill_player_name = msg.blue_alive.at(killkill);
                 for (int pl=0; pl<msg.blue_alive.size(); pl++) {
-                    if (kill_player_name.compare(msg.blue_alive.at(pl)) != 0)
-                        killkill = 1;
+                    if (kill_player_name.compare(msg.blue_alive.at(pl)) != 0) {
+                        // Procura o alive mais perto
+                        double dist_min = 100000;
+                        int angleMin = 0;
+                        double dist = 0;
+                        for (int pl=0; pl < msg.blue_alive.size(); pl++) {
+                            dist = getDistanceToPlayer(msg.blue_alive.at(pl));
+                            if ((dist < dist_min) && (!isnan(dist) ) ) {
+                                killkill = pl;
+                                dist_min = dist;
+                            }
+                        }
+                    }
+                    break;
                 }
                 move(msg.max_displacement, getAngleToPLayer(msg.blue_alive.at(killkill)));
                 bocas_msg.text = msg.blue_alive.at(killkill) + ", toma toma toma foguetinhos!!!";
