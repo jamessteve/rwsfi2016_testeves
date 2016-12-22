@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: player_testeves
+Description: Description of player_testeves
+Version: 0.0.0
+Cflags: 
+Libs: -L/usr/local/lib 
+Requires: 
